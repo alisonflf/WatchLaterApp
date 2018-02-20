@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:WatchLaterApp"
+             x:Class="WatchLaterApp.MainPage"
+             Title="Pesquisar">
+
+    <StackLayout>
+        <Entry x:Name="entry" Placeholder="digite o nome do filme..." Completed="Entry_Completed" VerticalOptions="Start" HorizontalOptions="CenterAndExpand"/>
+        <Label x:Name="label" VerticalOptions="Start" HorizontalOptions="CenterAndExpand"/>
+        <Image x:Name="poster" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" PropertyChanged="Handle_Property_Changed"/>
+        <ActivityIndicator x:Name="loading"/>
+    </StackLayout>
+
+</ContentPage>
+
+    
