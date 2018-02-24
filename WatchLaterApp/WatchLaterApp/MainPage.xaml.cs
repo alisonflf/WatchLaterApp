@@ -16,38 +16,45 @@ namespace WatchLaterApp
         WebRequest request;
         MovieList movielist;
         String apiKey = "4277f0776300025895ed7999e22fb605";
-        String language = "pt=BR";
+        String language = "pt-BR";
 
         public MainPage()
 		{
 			InitializeComponent();
-		}
+
+            if (Application.Current.Properties.ContainsKey("texto"))
+            {
+                entry.Text = Application.Current.Properties["texto"].ToString();
+            }
+
+            loading.IsRunning = false;
+            loading.IsVisible = false;
+        }
+
+        protected void OnSleep()
+        {
+            SalvarTexto();
+        }
 
         void Entry_Completed(object sender, EventArgs e)
         {
-            var entryText = ((Entry)sender).Text;
-            label.Text = "buscando por ..." + entryText;
+            loading.IsRunning = true;
+            loading.IsVisible = true;
+            var searchbartext = ((SearchBar)sender).Text;
             Uri uri = new Uri("https://api.themoviedb.org/3/search/movie?page=1&query=" +
-                entryText + "&api_key=" + apiKey + "&language=" + language);
+                searchbartext + "&api_key=" + apiKey + "&language=" + language);
             request = WebRequest.Create(uri);
             request.BeginGetResponse(HandleAsyncCallback, null);
-
         }
 
-        void loadPicture(String poster_path)
+        private void View_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            UriImageSource imageSource = new UriImageSource();
-            imageSource.Uri = new Uri("https://image.tmdb.org/t/p/w500" + poster_path);
-            imageSource.CacheValidity = TimeSpan.FromDays(2);
-            poster.Source = imageSource;
+            Navigation.PushAsync(new MovieDetailPage(e.SelectedItem));
         }
 
-        void Handle_Property_Changed(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        public void SalvarTexto()
         {
-            if (e.PropertyName == "IsLoading")
-            {
-                loading.IsRunning = poster.IsLoading;
-            }
+            Application.Current.Properties["texto"] = entry.Text;
         }
 
         void HandleAsyncCallback(IAsyncResult result)
@@ -59,13 +66,14 @@ namespace WatchLaterApp
                     Stream stream = request.EndGetResponse(result).GetResponseStream();
                     DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(MovieList));
                     movielist = (MovieList)serializer.ReadObject(stream);
-
-                    label.Text = movielist.results[0].title;
-                    loadPicture(movielist.results[0].poster_path);
+                    list.ItemsSource = movielist.results;
+                    loading.IsRunning = false;
+                    loading.IsVisible = false;
                 }
                 catch (Exception e)
                 {
-                    label.Text = "busca sem resultados";
+                    loading.IsRunning = false;
+                    loading.IsVisible = false;
                 }
             });
         }

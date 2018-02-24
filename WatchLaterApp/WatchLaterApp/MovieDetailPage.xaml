@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WatchLaterApp.MovieDetailPage"
+             Title="Informações do Filme">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <OnPlatform x:Key="textColor" x:TypeArguments="Color">
+                <On Platform="iOS" Value="Red" />
+                <On Platform="Android" Value="Blue" />
+            </OnPlatform>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="label" VerticalOptions="Start" 
+                   HorizontalOptions="CenterAndExpand" FontSize="Medium" />
+            <Image x:Name="poster" HorizontalOptions="Center"/>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Label Text="Média de Votos: " 
+                       HorizontalOptions="Start" FontSize="Medium" />
+                <Label x:Name="vote" VerticalOptions="Start" 
+                   HorizontalOptions="Start" FontSize="Medium" />
+            </StackLayout>
+            
+            <Button x:Name="add_movie" TextColor="{StaticResource textColor}" Text="Adicionar Filme a Lista" 
+                    HorizontalOptions="Center" Clicked="Handle_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -6,10 +6,28 @@
              Title="Pesquisar">
 
     <StackLayout>
-        <Entry x:Name="entry" Placeholder="digite o nome do filme..." Completed="Entry_Completed" VerticalOptions="Start" HorizontalOptions="CenterAndExpand"/>
-        <Label x:Name="label" VerticalOptions="Start" HorizontalOptions="CenterAndExpand"/>
-        <Image x:Name="poster" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" PropertyChanged="Handle_Property_Changed"/>
+        <SearchBar x:Name="entry" Placeholder="digite o nome do filme..." SearchButtonPressed="Entry_Completed" VerticalOptions="Start" HorizontalOptions="FillAndExpand"/>
         <ActivityIndicator x:Name="loading"/>
+
+        <ListView x:Name="list" 
+                  VerticalOptions="FillAndExpand" 
+                  HorizontalOptions="FillAndExpand" 
+                  ItemSelected="View_ItemSelected" 
+                  SelectedItem="{Binding SelectedItem}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                         <StackLayout Orientation="Vertical">
+                            <StackLayout Orientation="Horizontal" Padding="10,5,10,5">
+                                <Label HorizontalOptions="StartAndExpand" Text="{Binding title}" FontSize="Default" TextColor="Blue" />
+                                <Label HorizontalOptions="End" Text="{Binding vote_average}" FontSize="Small" TextColor="YellowGreen" />
+                            </StackLayout>
+                        </StackLayout> 
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
     </StackLayout>
 
 </ContentPage>
